@@ -1,5 +1,6 @@
 import { Table } from "@radix-ui/themes"
 
+// TodoList component displays a list of tasks
 export const ToDoList = () => {
   return (
     <Table.Root variant="surface" className="w-full">
