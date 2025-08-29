@@ -17,7 +17,7 @@ export const ToDoList = async () => {
             <Table.Body>
                 {/* Iterates and renders the fetched tasks */}
                 {tasks.map((task: Task) => (
-                    <Table.Row>
+                    <Table.Row key={task.id}>
                     <Table.RowHeaderCell>{task.description}</Table.RowHeaderCell>
                     <Table.Cell>danilo@example.com</Table.Cell>
                 </Table.Row>

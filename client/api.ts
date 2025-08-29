@@ -4,9 +4,22 @@ const apiBaseUrl = 'http://localhost:4000';
 
 // Fetches all tasks from the API
 export const getAllTasks = async (): Promise<Task[]> => {
-    const response = await fetch(`${apiBaseUrl}/tasks`);
-    if (!response.ok) {
+    const res = await fetch(`${apiBaseUrl}/tasks`);
+    if (!res.ok) {
         throw new Error('Failed to fetch tasks');
     }
-    return response.json()
+    return res.json()
+}
+
+// Adds new task to tasks data
+export const addTask = async (task: string) => {
+    const res = await fetch(`${apiBaseUrl}/tasks`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ task }),
+    })
+
+    if (!res.ok) throw new Error('Failed to add task');
+
+    else alert('Task Added Sucessfully');
 }
