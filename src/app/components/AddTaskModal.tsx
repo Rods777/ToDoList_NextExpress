@@ -4,9 +4,12 @@ import { Dialog, Button, Flex, TextField, Text } from '@radix-ui/themes';
 import { FaPlus } from "react-icons/fa";
 import { addTask } from '../../../api';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 // Modal Component that adds new task
 export const AddTaskModal = () => {
+    const [ open, setOpen ] = useState<boolean>(false)
+
     // Handles form submission
     const handleSubmitTask = async (formData: FormData) => {
         const description = formData.get("description")?.toString().trim()
@@ -19,6 +22,7 @@ export const AddTaskModal = () => {
 
         try {
             await addTask(formData);
+            setOpen(false)
             toast.success("Task added successfully!")
         } catch (error: any) {
             toast.error("Failed to add task")
@@ -26,7 +30,7 @@ export const AddTaskModal = () => {
     } 
 
     return (
-        <Dialog.Root>
+        <Dialog.Root open={open} onOpenChange={setOpen}>
             {/* Button to trigger modal */}
             <Dialog.Trigger>
                 <Button size="3" color='green'><FaPlus /> Add Task</Button>
@@ -59,9 +63,7 @@ export const AddTaskModal = () => {
                                 Cancel
                             </Button>
                         </Dialog.Close>
-                        <Dialog.Close>
-                            <Button type='submit'>Save</Button>
-                        </Dialog.Close>
+                        <Button type='submit'>Save</Button>
                     </Flex>
                 </form>
             </Dialog.Content>
