@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
+import { Toaster } from 'react-hot-toast';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -27,6 +28,10 @@ export default function RootLayout({
         className={`${poppins.variable} antialiased`}
       >
         <Theme accentColor="crimson" grayColor="sand" radius="large" scaling="95%">{children}</Theme>
+        <Toaster 
+          position="top-center"
+          reverseOrder={false}
+        />
       </body>
     </html>
   );
