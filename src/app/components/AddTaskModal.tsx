@@ -1,45 +1,70 @@
+"use client"
+
 import { Dialog, Button, Flex, TextField, Text } from '@radix-ui/themes';
 import { FaPlus } from "react-icons/fa";
+import { addTask } from '../../../api';
+import toast from 'react-hot-toast';
 
 // Modal Component that adds new task
 export const AddTaskModal = () => {
-  return (
-    <Dialog.Root>
-        {/* Button to trigger modal */}
-        <Dialog.Trigger>
-            <Button size="3" color='green'><FaPlus /> Add Task</Button>
-        </Dialog.Trigger>
+    // Handles form submission
+    const handleSubmitTask = async (formData: FormData) => {
+        const description = formData.get("description")?.toString().trim()
+        
+        // Checks if description is empty
+        if (!description) {
+            toast.error("Please fill out the description");
+            return;
+        }
 
-        {/* Add Task Modal Content */}
-        <Dialog.Content maxWidth="450px">
-            <Dialog.Title>Add Task</Dialog.Title>
-            <Dialog.Description size="2" mb="4">
-                What's on your mind?
-            </Dialog.Description>
+        try {
+            await addTask(formData);
+            toast.success("Task added successfully!")
+        } catch (error: any) {
+            toast.error("Failed to add task")
+        }
+    } 
 
-            <Flex direction="column" gap="1">
-                <label>
-                    <Text as="div" size="2" mb="2" weight="bold">
-                        Description
-                    </Text>
-                    {/* Input field for entering the task description */}
-                    <TextField.Root
-                        placeholder="Enter your task description..."
-                    />
-                </label>
-            </Flex>
+    return (
+        <Dialog.Root>
+            {/* Button to trigger modal */}
+            <Dialog.Trigger>
+                <Button size="3" color='green'><FaPlus /> Add Task</Button>
+            </Dialog.Trigger>
 
-            <Flex gap="3" mt="4" justify="end">
-                <Dialog.Close>
-                    <Button variant="soft" color="gray">
-                        Cancel
-                    </Button>
-                </Dialog.Close>
-                <Dialog.Close>
-                    <Button>Save</Button>
-                </Dialog.Close>
-            </Flex>
-        </Dialog.Content>
-    </Dialog.Root>
-  )
+            {/* Add Task Modal Content */}
+            <Dialog.Content maxWidth="450px">
+                <Dialog.Title>Add Task</Dialog.Title>
+                <Dialog.Description size="2" mb="4">
+                    What's on your mind?
+                </Dialog.Description>
+
+                <form action={handleSubmitTask}>
+                    <Flex direction="column" gap="1">
+                        <label>
+                            <Text as="div" size="2" mb="2" weight="bold">
+                                Description
+                            </Text>
+                            {/* Input field for entering the task description */}
+                            <TextField.Root
+                                placeholder="Enter your task description..."
+                                name="description"
+                            />
+                        </label>
+                    </Flex>
+
+                    <Flex gap="3" mt="4" justify="end">
+                        <Dialog.Close>
+                            <Button variant="soft" color="gray">
+                                Cancel
+                            </Button>
+                        </Dialog.Close>
+                        <Dialog.Close>
+                            <Button type='submit'>Save</Button>
+                        </Dialog.Close>
+                    </Flex>
+                </form>
+            </Dialog.Content>
+        </Dialog.Root>
+    )
 }

@@ -1,3 +1,6 @@
+"use server";
+
+import { revalidatePath } from 'next/cache';
 import { Task } from './types/tasks';
 
 const apiBaseUrl = 'http://localhost:4000';
@@ -12,14 +15,17 @@ export const getAllTasks = async (): Promise<Task[]> => {
 }
 
 // Adds new task to tasks data
-export const addTask = async (task: string) => {
+export const addTask = async (formData: FormData) => {
+    const description = formData.get('description')
+
     const res = await fetch(`${apiBaseUrl}/tasks`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ task }),
+        body: JSON.stringify({ description }),
     })
 
     if (!res.ok) throw new Error('Failed to add task');
 
-    else alert('Task Added Sucessfully');
+    // Re-renders the tasks to get updated in UI
+    revalidatePath(`${apiBaseUrl}/tasks`)
 }
