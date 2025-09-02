@@ -29,3 +29,16 @@ export const addTask = async (formData: FormData) => {
     // Re-renders the tasks to get updated in UI
     revalidatePath(`${apiBaseUrl}/tasks`)
 }
+
+
+// Fetches task info by id
+export const getTaskById = async (id: string | number): Promise<Task> => {
+    
+    const res = await fetch(`${apiBaseUrl}/tasks/${id}`)
+
+    if (!res.ok) {
+        throw new Error('Failed to task by id');
+    }
+
+    return res.json()
+}
