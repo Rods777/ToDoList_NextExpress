@@ -1,8 +1,8 @@
 import { Table } from "@radix-ui/themes"
 import { getAllTasks } from "../../../api"
 import { Task } from "../../../types/tasks";
-import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { EditTaskModal } from "./EditTaskModal";
 
 // TodoList component displays a list of tasks
 export const ToDoList = async () => {
@@ -30,8 +30,8 @@ export const ToDoList = async () => {
                         <Table.RowHeaderCell>{task.description}</Table.RowHeaderCell>
                         <Table.Cell className="flex gap-5 items-center">
                             {/* Action Buttons */}
-                            <FaEdit className="text-blue-600" size={20}/>
-                            <MdDelete className="text-red-600" size={25}/>
+                            <EditTaskModal id={task.id} />
+                            <MdDelete cursor={"pointer"} className="text-red-600" size={25}/>
                         </Table.Cell>
                     </Table.Row>
                 ))}
